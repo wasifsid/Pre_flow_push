@@ -1,60 +1,41 @@
-# cases Special Graphs
+# Pre Flow Push Algorithm
 
- *     G=Cycle(5)
-     
-       G.InsertEdge(1,3)
-     
- *     G=Cycle(4)
-     
- *     G=Path(10)
-     
- *     G=CompleteGraph(5)
-     
- *     G=EmptyGraph(10)
+## Overview
 
- 
-# Test cases random graphs
+The Pre Flow Push algorithm is a graph algorithm used to solve the maximum flow problem in a network. It is an improvement over the Ford-Fulkerson algorithm and provides better performance in practice. This README file provides an overview of the Pre Flow Push algorithm(alternatively, Push-relabel algorithm) introduced by Goldberg which is a slightly different approach to the computation of maximum flows. Push-relabel algorithms are really frequently the method of choice in practice since they are quick to solve the maximum-flow problem and also other flow problems, such as the minimum-cost flow problem. Push-relabel algorithms work on one vertex at a time instead of finding an augmented path in the entire residual network and for this reason, push-relabel algorithms do not maintain the flow-conservation constraints throughout their execution but they do maintain a preflow. For more theoretical background and concepts visit my project https://drive.google.com/file/d/1ObXMm5aAseCBmTIYlLDKGLgaVFm6JbgM/view?usp=sharing   
 
- *     G=RandomGraph(5,0.5)
- *     G=RandomGraph(5,0.7)
- *     G=RandomGraph(5,0.3)
- *     G=RandomGraph(5,0.8)
- *     G=RandomGraph(5,1)
+## Algorithm Description
 
-# Test cases Chordal graphs
+The Pre Flow Push algorithm works by maintaining a "pre-flow" in the network. A pre-flow assigns flow values to edges in the network without satisfying the flow conservation constraint. It starts with an initial feasible pre-flow and gradually transforms it into a maximum flow by pushing excess flow from higher-level vertices to lower-level vertices.
 
-*     Tittman graph 
+The algorithm follows these steps:
 
-      G=SGraph([1,2,3,4],[(1,2),(1,3),(2,3),(2,4),(3,4)])
+1. **Initialization**: Assign a pre-flow with positive flow values to the edges of the network, satisfying capacity constraints. Set the flow value of the source node to the sum of outgoing edge capacities.
 
+2. **Push operation**: Select a vertex with excess flow (the flow entering the vertex is greater than the flow leaving the vertex). Push the excess flow to its adjacent vertices along the edges that have residual capacity. This operation reduces the excess flow at the current vertex and increases the flow at the adjacent vertices.
 
-*     G=SGraph([1,2,3,4,5,6,7,8],[(1,2),(1,3),(1,4),(2,3),(2,4),(3,4),(4,5),(4,8),(4,7),(5,6),(5,7),(6,7),(7,8)])
+3. **Relabel operation**: If there are no more vertices with excess flow, then relabel a vertex. Relabeling increases the height of a vertex, which allows more flow to be pushed towards it in the next push operation.
 
+4. **Repeat**: Repeat steps 2 and 3 until all excess flows are eliminated. The algorithm terminates when there are no vertices with excess flow.
 
-*     G=SGraph([1,2,3,4,5,6,7,8,9,10,11,12,13],[(1,2),(1,3),(2,3),(3,4),(3,5),(3,6),(4,5),(4,6),(4,10),(5,6),(5,10),(5,9),(5,12),(6,7),(6,8),(6,9),(7,8),(8,9),(10,11),(10,12),(11,12),(12,13)])
+5. **Maximum flow**: The final flow values assigned to the edges represent the maximum flow from the source to the sink in the network.
 
-# Test cases Disjoint union of graphs
-*     G=Cycle(3)|CompleteGraph(4)
-*     G=Path(2)|Path(2)
-*     G=Cycle(3)|Cycle(3)
+## Implementation
 
-# Test cases Peterson graph 
-*     G=SGraph([1,2,3,4,5,6,7,8,9,10],[(1,2),(1,4),(1,6),(2,3),(2,7),(3,5),(3,8),(4,5),(4,10),(5,9),(6,8),(6,9),(7,10),(7,9),(8,10)])
+The Pre Flow Push algorithm can be implemented using various data structures and programming languages. Here is a high-level description of the implementation:
 
-# Test cases Articulation Points
-*     G=SGraph([1,2,3,4,5,6,7,8,9,10],[(1,2),(1,4),(2,3),(2,7),(2,8),(2,5),(3,10),(3,9),(3,4),(5,6),(5,8),(5,7),(7,8)])
-*     G=SGraph([1,2,3,4,5,6],[(1,2),(1,3),(2,3),(3,4),(3,6),(4,6),(4,5),(5,6)])
-*     G=SGraph([1,2,3,4,5,6,7,8,9],[(1,2),(1,3),(2,4),(3,4),(4,5),(5,6),(5,9),(6,9),(6,7),(6,8),(7,8)])
-*     G=SGraph([1,2,3,4,5,6,7,8],[(1,2),(1,3),(2,3),(3,4),(3,5),(4,5),(4,6),(5,6),(6,7),(6,8),(7,8)])
-*     G=SGraph([1,2,3,4,5,6,7,8,9,10],[(1,2),(1,4),(2,3),(3,4),(3,9),(3,10),(2,5),(2,7),(2,8),(5,6),(5,7),(7,8),(8,5)])
+1. Represent the network as a directed graph with vertices and edges. Each edge has a capacity and a flow value associated with it.
 
-# Articulation between two 4-cycles
-*     G=SGraph([1,2,3,4,5,6,7],[(1,2),(1,3),(2,4),(3,4),(4,5),(4,7),(5,6),(6,7)]) 
+2. Initialize the graph with the required data structures, such as adjacency lists or matrices to represent the graph structure, capacities, and flow values.
 
-# Articulation between two 4-cycles and one 5-cycle
+3. Implement the push operation to find a vertex with excess flow and push the flow to its adjacent vertices. Update the flow values and residual capacities accordingly.
 
-*     G=SGraph([1,2,3,4,5,6,7,8,9,10,11],[(1,2),(1,3),(2,4),(3,4),(4,5),(4,7),(5,6),(6,7),(4,8),(4,9),(8,10),(9,11),(10,11)])  
+4. Implement the relabel operation to increase the height of a vertex. This operation ensures that the push operation can continue to make progress towards the sink.
 
-# Articulation between two 4-cycles,one 5-cycle and one 4-cycle
-    
-*     G=SGraph([1,2,3,4,5,6,7,8,9,10,11,12,13,14],[(1,2),(1,3),(2,4),(3,4),(4,5),(4,7),(5,6),(6,7),(4,8),(4,9),(8,10),(9,11),(10,11),(11,12),(11,14),(12,13),(13,14)])  
+5. Use a suitable algorithm to find the maximum flow by repeating the push and relabel operations until no more excess flows exist.
+
+6. Return the flow values assigned to the edges, which represent the maximum flow from the source to the sink in the network.
+
+## Conclusion
+
+The Pre Flow Push algorithm is an efficient approach for solving the maximum flow problem in a network. It provides an improvement over the Ford-Fulkerson algorithm by maintaining a pre-flow and using push and relabel operations to reduce the excess flow and increase the flow towards the sink. By following the guidelines and steps mentioned in this README, you can implement and utilize the Pre Flow Push algorithm in

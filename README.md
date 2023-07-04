@@ -1,4 +1,4 @@
-# Test cases Special Graphs
+# cases Special Graphs
 
  *     G=Cycle(5)
      

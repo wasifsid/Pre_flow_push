@@ -12,7 +12,8 @@
 #             of the vertex to perform push() operation. In order to Increases height we select the smallest height
 #             adjacent (in the residual graph i.e. an adjacent to whom we can add flow) and adding one to it .
 
-# We have use SGraph class to create input graphs.
+# We have use SGraph class to create input graphs. In addition:
+# Line 163-165 gives you an oppertuinity to draw custome graphs
 
 # On the execution of the code we will get edge set, vertex set capacity assign to each edge, maximum flow in network
 # and run time.
@@ -167,7 +168,6 @@ if __name__=='__main__':
         vert = [1, 2, 3, 4, 5, 6]
         source=1
         sink=6
-        # solution=23
 
         ## GET Edge sets from the graph and store into a variable
         #edgec=check.EdgeSet()
